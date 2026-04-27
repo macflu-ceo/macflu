@@ -2,7 +2,7 @@
 const { useState: useStateA, useEffect: useEffectA } = React;
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "heroVariant": "css",
+  "heroVariant": "type",
   "creatorLayout": "grid",
   "splitLayout": "side",
   "marqueeSpeed": 40

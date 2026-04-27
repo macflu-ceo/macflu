@@ -4,7 +4,7 @@ const I18N = {
     nav: { about: "About", references: "References", how: "How", services: "Services", contact: "Contact" },
     edition: "에디션 03 · SS / 26",
     home: {
-      heroKickers: ["BRANDS", "INFLUENCE", "BRANDS"],
+      heroKickers: ["BRANDS", "INFLUENCE", "KOREA"],
       heroLine1: "Brands,",
       heroLine2: "dressed",
       heroLine3: "in influence.",
@@ -227,7 +227,7 @@ const I18N = {
     nav: { about: "About", references: "References", how: "How", services: "Services", contact: "Contact" },
     edition: "Edition 03 · SS / 26",
     home: {
-      heroKickers: ["BRANDS", "INFLUENCE", "BRANDS"],
+      heroKickers: ["BRANDS", "INFLUENCE", "KOREA"],
       heroLine1: "Brands,",
       heroLine2: "dressed",
       heroLine3: "in influence.",
