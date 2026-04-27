@@ -201,15 +201,23 @@ function ServicesPage({ t, setPage }) {
         </div>
         <h2 className="h-2 fade-up" style={{ maxWidth: 1440, margin: "0 auto 48px" }}>{s.pkgHead}</h2>
       </section>
-      <div className="pkg-grid" style={{ maxWidth: 1440, margin: "0 auto" }}>
-        {s.packages.map(([tier, head, items, price], i) => (
-          <div className={"pkg" + (i === 1 ? " is-feature" : "")} key={i}>
+      <div className="pkg-grid" style={{ maxWidth: 1440, margin: "0 auto", padding: "0 48px" }}>
+        {s.packages.map(([tier, head, subhead, body, regions], i) => (
+          <div className={"pkg" + (i === 0 ? " is-feature" : "")} key={i}>
             <span className="tier">{tier}</span>
             <h3>{head}</h3>
-            <ul>{items.map((it, j) => <li key={j}>{it}</li>)}</ul>
-            <span className="price">{price}</span>
+            {subhead ? <p className="pkg-sub">{subhead}</p> : null}
+            {Array.isArray(regions) && regions.length ? (
+              <div className="pkg-regions">
+                {regions.map((r, j) => <span key={j} className="pkg-region">{r}</span>)}
+              </div>
+            ) : null}
+            <p className="pkg-body">{body}</p>
           </div>
         ))}
+      </div>
+      <div style={{ maxWidth: 1440, margin: "32px auto 0", padding: "0 48px", textAlign: "right" }}>
+        <a href="#contact" onClick={(e) => { e.preventDefault(); setPage("contact"); }} className="btn btn--tertiary">{s.pkgPriceLink}</a>
       </div>
       <section className="screen--tomato" style={{ padding: "120px 48px", color: "var(--cream)", position: "relative", overflow: "hidden", marginTop: 120 }}>
         <div className="clip"><div className="frame frame--editorial"></div></div>

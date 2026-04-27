@@ -351,3 +351,53 @@ h1, h2, h3, .h-mega, .h-display, .h-1, .h-2, .h-3,
 .split__half .lede { color: var(--cream); opacity: 0.92; }
 .split__half .kicker { color: var(--cream); opacity: 0.85; }
 .screen--cream .h-2 { color: var(--ink); }
+
+/* ============ FIXES — Services packages new structure ============ */
+.pkg-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.pkg { min-height: 380px; }
+.pkg-sub {
+  font-family: var(--display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.4;
+  margin: 0 0 16px;
+  opacity: 0.85;
+  word-break: keep-all;
+}
+.pkg-regions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0 0 20px;
+}
+.pkg-region {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  opacity: 0.9;
+}
+.pkg-body {
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.85;
+  word-break: keep-all;
+  flex: 1;
+}
+.pkg.is-feature .pkg-region { border-color: var(--mustard); color: var(--mustard); }
+
+@media (max-width: 1024px) {
+  .pkg-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .pkg-grid { grid-template-columns: 1fr; }
+}
