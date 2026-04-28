@@ -4,7 +4,7 @@ const { useState, useEffect, useRef } = React;
 function Nav({ lang, setLang, page, setPage, t }) {
   const items = [
     ["about", t.nav.about],
-    ["references", t.nav.references],
+    // ["references", t.nav.references],  // hidden until cases ready
     ["how", t.nav.how],
     ["services", t.nav.services],
     ["contact", t.nav.contact],
@@ -77,10 +77,12 @@ function Footer({ t, setPage }) {
           {link("how", t.nav.how)}
           {link("services", t.nav.services)}
         </div>
+        {/* References hidden until cases ready
         <div className="footer__col">
           <h4>{f.voices}</h4>
           {link("references", t.nav.references)}
         </div>
+        */}
         <div className="footer__col">
           <h4>{f.contact}</h4>
           <a href="mailto:hello@macflu.kr">hello@macflu.kr</a>

@@ -235,9 +235,49 @@ function ServicesPage({ t, setPage }) {
 }
 
 // ============ CONTACT — short, single-screen ============
+function ContactField({ f }) {
+  if (f.kind === "select") {
+    return (
+      <div className="field"><label>{f.label}</label>
+        <select className="m-input" defaultValue="">
+          <option value="" disabled>{f.ph || "선택"}</option>
+          {f.options.map((o, i) => <option key={i} value={o}>{o}</option>)}
+        </select>
+      </div>
+    );
+  }
+  if (f.kind === "multi") {
+    return (
+      <div className="field field--multi"><label>{f.label}</label>
+        <div className="multi-options">
+          {f.options.map((o, i) => (
+            <label key={i} className="multi-opt">
+              <input type="checkbox" name={f.id} value={o} />
+              <span>{o}</span>
+            </label>
+          ))}
+        </div>
+      </div>
+    );
+  }
+  if (f.kind === "textarea") {
+    return (
+      <div className="field"><label>{f.label}</label>
+        <textarea className="m-input" rows="3" placeholder={f.ph || ""}></textarea>
+      </div>
+    );
+  }
+  return (
+    <div className="field"><label>{f.label}</label>
+      <input className="m-input" type="text" placeholder={f.ph || ""} />
+    </div>
+  );
+}
+
 function ContactPage({ t }) {
   const c = t.contact;
   const [tab, setTab] = useStateP("brand");
+  const fields = (c[tab] && c[tab].fields) || [];
   return (
     <section className="contact-screen first-fade">
       <div className="clip"><div className="frame frame--studio"></div></div>
@@ -254,10 +294,7 @@ function ContactPage({ t }) {
                 <button type="button" key={k} className={"seg " + (tab === k ? "is-on" : "")} onClick={() => setTab(k)}>{label}</button>
               ))}
             </div>
-            <div className="field"><label>{c.labels.name}</label><input className="m-input" placeholder={c.placeholders.name} /></div>
-            <div className="field"><label>{c.labels.brand}</label><input className="m-input" placeholder={c.placeholders.brand} /></div>
-            <div className="field"><label>{c.labels.email}</label><input className="m-input" placeholder={c.placeholders.email} /></div>
-            <div className="field"><label>{c.labels.message}</label><textarea className="m-input" rows="3" placeholder={c.placeholders.message}></textarea></div>
+            {fields.map((f) => <ContactField key={f.id} f={f} />)}
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 24 }}>
               <span style={{ fontFamily: "var(--mono)", fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", opacity: 0.6 }}>{c.avg}</span>
               <button type="button" className="btn btn--primary">{c.sendBtn} <span className="arrow">→</span></button>
@@ -266,6 +303,7 @@ function ContactPage({ t }) {
           <aside className="contact-aside">
             <span className="kicker">{c.asideHead}</span>
             <a className="contact-kakao" href="#">{c.kakao} <span className="arrow">↗</span></a>
+            <p className="contact-kakao-sub" style={{ fontSize: 12, opacity: 0.6, margin: "4px 0 16px" }}>{c.kakaoSub}</p>
             <a className="contact-email" href={"mailto:" + c.email}>{c.email}</a>
             <div className="contact-socials">
               {c.socials.map((s, i) => <a key={i} href="#">{s}</a>)}
