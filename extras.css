@@ -270,15 +270,14 @@ h1, h2, h3, .h-mega, .h-display, .h-1, .h-2, .h-3,
   overflow-wrap: break-word;
 }
 
-/* ============ FIXES — Origin section full-bleed map + overlay ============ */
+/* ============ Origin section — dotted world map + side-aligned text ============ */
 .origin-fullbleed {
   position: relative;
   min-height: 100vh;
-  padding: 120px 48px;
+  padding: 80px 48px;
   overflow: hidden;
   display: flex;
   align-items: center;
-  justify-content: center;
 }
 .origin-map-bg {
   position: absolute;
@@ -287,15 +286,62 @@ h1, h2, h3, .h-mega, .h-display, .h-1, .h-2, .h-3,
   height: 100%;
   z-index: 0;
   pointer-events: none;
+  mask-image: linear-gradient(to right, transparent 0%, transparent 38%, black 60%, black 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 38%, black 60%, black 100%);
 }
+.origin-map-bg .dot {
+  fill: var(--ink);
+  opacity: 0.10;
+  animation: originDotPulse 4s ease-in-out infinite;
+}
+.origin-map-bg .dot.persian {
+  fill: var(--persian);
+  animation: originDotPulsePersian 4s ease-in-out infinite;
+}
+@keyframes originDotPulse {
+  0%, 100% { opacity: 0.08; }
+  50% { opacity: 0.16; }
+}
+@keyframes originDotPulsePersian {
+  0%, 100% { opacity: 0.16; }
+  50% { opacity: 0.26; }
+}
+.origin-map-bg .city-halo {
+  fill: var(--mustard);
+  opacity: 0.14;
+  animation: originHaloPulse 2.6s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+@keyframes originHaloPulse {
+  0%, 100% { opacity: 0.14; transform: scale(1); }
+  50% { opacity: 0.40; transform: scale(1.6); }
+}
+.origin-map-bg .city-core {
+  fill: var(--mustard);
+  opacity: 0.85;
+}
+.origin-map-bg .city-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  fill: var(--ink);
+  font-weight: 500;
+  opacity: 0.55;
+}
+
 .origin-overlay {
   position: relative;
   z-index: 3;
-  max-width: 1100px;
+  max-width: 1280px;
   width: 100%;
-  text-align: left;
+  margin: 0 auto;
   padding: 0 24px;
+  display: grid;
+  grid-template-columns: minmax(0, 620px) 1fr;
+  gap: 80px;
 }
+.origin-overlay__text { padding-right: 24px; }
 .origin-overlay .kicker {
   display: block;
   margin-bottom: 24px;
@@ -304,46 +350,37 @@ h1, h2, h3, .h-mega, .h-display, .h-1, .h-2, .h-3,
 }
 .origin-fullbleed__head {
   font-family: var(--display);
-  font-weight: 800;
-  font-size: clamp(48px, 7vw, 112px);
-  line-height: 1.0;
-  letter-spacing: -0.035em;
+  font-weight: 900;
+  font-size: clamp(44px, 5.6vw, 80px);
+  line-height: 1.05;
+  letter-spacing: -0.04em;
   color: var(--ink);
-  margin: 0 0 32px;
   max-width: 18ch;
+  word-break: keep-all;
+  overflow-wrap: normal;
+  margin: 0 0 28px;
+}
+.origin-fullbleed__head .accent {
+  color: var(--persian);
 }
 .origin-fullbleed__lede {
   font-family: var(--sans);
-  font-size: clamp(15px, 1.4vw, 18px);
-  line-height: 1.6;
-  color: var(--ink);
-  max-width: 540px;
-  margin: 0;
-  opacity: 0.85;
-}
-.origin-italic {
-  font-family: 'EB Garamond', 'Times New Roman', serif;
-  font-style: italic;
-  color: var(--persian);
   font-weight: 500;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink);
+  max-width: 480px;
+  opacity: 0.78;
+  margin: 0;
+  word-break: keep-all;
 }
-.origin-map-bg .route {
-  stroke-dasharray: 1400;
-  stroke-dashoffset: 1400;
-  animation: drawRouteFB 2s cubic-bezier(0.22,1,0.36,1) forwards;
-}
-.origin-map-bg .city {
-  opacity: 0;
-  animation: cityInFB 700ms ease forwards;
-}
-.origin-map-bg .city-halo {
-  animation: cityPulse 2.6s ease-in-out infinite;
-}
-@keyframes drawRouteFB { to { stroke-dashoffset: 0; } }
-@keyframes cityInFB { to { opacity: 1; } }
-@keyframes cityPulse {
-  0%, 100% { opacity: 0.18; transform: scale(1); }
-  50% { opacity: 0.45; transform: scale(1.4); }
+
+@media (max-width: 900px) {
+  .origin-overlay { grid-template-columns: 1fr; gap: 48px; }
+  .origin-map-bg {
+    mask-image: linear-gradient(to bottom, transparent 0%, transparent 38%, black 58%, black 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 38%, black 58%, black 100%);
+  }
 }
 
 /* ============ FIXES — Split & Partners headline visibility ============ */
