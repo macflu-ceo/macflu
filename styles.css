@@ -356,10 +356,9 @@
 /* ============ GLOBAL OPERATE (section ④) ============ */
 .operate {
   background: var(--ink); color: var(--cream);
-  padding: 72px 48px 120px;
+  padding: 120px 48px;
   position: relative; overflow: hidden;
 }
-.operate .section__head { margin-bottom: 24px; }
 .operate__h {
   font-family: var(--display); font-weight: 900;
   font-size: clamp(40px, 6.5vw, 104px); line-height: 0.95; letter-spacing: -0.04em;
@@ -397,9 +396,45 @@
   .flow { border-right: 0; }
 }
 
-/* World map illustration */
-.operate__map { position: absolute; inset: 0; opacity: 0.08; pointer-events: none; z-index: 0; }
-.operate > * { position: relative; z-index: 1; }
+/* World globe — dominant graphic */
+.operate__globe-wrap {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  overflow: hidden;
+}
+.operate__globe {
+  position: absolute;
+  /* bleed off right & bottom — huge, overwhelming */
+  top: -8%; right: -22%;
+  width: 105%; height: 130%;
+  min-width: 1100px;
+}
+.operate__globe-meta {
+  position: absolute; left: 48px; bottom: 48px; z-index: 1;
+  font-family: var(--mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--cream); opacity: 0.45; line-height: 1.7;
+  display: flex; flex-direction: column; gap: 4px;
+  pointer-events: none;
+}
+.operate__globe-meta > div:first-child::before {
+  content: '●'; color: #E6433D; margin-right: 8px;
+  animation: op-globe-pulse 1.6s ease-in-out infinite;
+}
+@keyframes op-globe-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+.op-globe__halo--lg { animation: op-globe-halo 2.4s ease-out infinite; transform-origin: center; transform-box: fill-box; }
+.op-globe__halo--md { animation: op-globe-halo 3.2s ease-out infinite; transform-origin: center; transform-box: fill-box; }
+@keyframes op-globe-halo {
+  0% { transform: scale(0.6); opacity: 0.7; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+.operate > *:not(.operate__globe-wrap):not(.operate__globe-meta) { position: relative; z-index: 1; }
+
+@media (max-width: 900px) {
+  .operate__globe { top: -4%; right: -40%; width: 140%; height: 80%; }
+  .operate__globe-meta { left: 24px; bottom: 24px; }
+}
 
 /* ============ MODELS (section ⑤) ============ */
 .models {

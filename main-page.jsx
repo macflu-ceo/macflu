@@ -350,26 +350,18 @@ function BoutiqueStrip() {
 function MainOperate() {
   return (
     <section className="operate" data-screen-label="04 Operate" data-nav-theme="ink">
-      <svg className="operate__map" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-        <g stroke="#FAF6EC" strokeWidth="0.5" fill="none">
-          <path d="M 100 300 Q 280 240 460 300 T 820 320 Q 1000 280 1180 320"/>
-          <path d="M 60 480 Q 240 470 420 490 Q 600 510 780 490 T 1140 500"/>
-          <path d="M 200 660 Q 380 640 560 670 Q 740 700 920 680 T 1280 690"/>
-          <path d="M 200 820 Q 380 800 560 830"/>
-          <path d="M 100 200 Q 380 100 720 220 Q 1060 340 1340 200" strokeDasharray="4 8" stroke="#DBA42E" strokeWidth="0.8"/>
-        </g>
-        <circle cx="240" cy="540" r="6" fill="#E6433D"/>
-        <circle cx="900" cy="280" r="6" fill="#DBA42E"/>
-        <circle cx="1180" cy="540" r="5" fill="#DBA42E"/>
-        <circle cx="1300" cy="660" r="5" fill="#DBA42E"/>
-      </svg>
+      <OperateGlobe />
+      <div className="operate__globe-meta" aria-hidden="true">
+        <div>— GLOBAL NETWORK · LIVE</div>
+        <div>14 CITIES · 6 PLATFORMS · 4 TIMEZONES</div>
+      </div>
       <div className="section__head" style={{ borderBottomColor: 'rgba(250,246,236,0.32)', color: 'inherit', opacity: 1 }}>
         <div><span style={{ opacity: 0.6 }}><strong style={{ fontSize: 13 }}>04</strong> Operate</span></div>
         <div className="section__head-meta" style={{ opacity: 0.6 }}>한국에서 시작. 한국에서 끝나지 않는다.</div>
       </div>
       <h2 className="operate__h reveal">
-        한국에서 시작하지만,<br/>
-        한국에서 <span className="acc">끝나지 않는다.</span>
+        글로벌 시장에서 결과를<br/>
+        <span className="acc">만드는 것을 목표로 합니다.</span>
       </h2>
 
       <div className="operate__flow">
@@ -405,6 +397,154 @@ function MainOperate() {
         </div>
       </div>
     </section>
+  );
+}
+
+// ─────── OPERATE / GLOBE — dominant world graphic ───────────────────────────
+function OperateGlobe() {
+  // city defs: x,y on 1000x1000 viewBox roughly mapped to a wireframe globe
+  // The globe is centered at (640, 520) with r=460 — bleeds off right edge.
+  const cities = [
+    { id: 'seoul',   cx: 880, cy: 420, label: 'SEOUL',   meta: '37.56°N · HQ',     size: 'lg',  color: '#E6433D' },
+    { id: 'milano',  cx: 470, cy: 440, label: 'MILANO',  meta: '45.46°N · 18',     size: 'lg',  color: '#DBA42E' },
+    { id: 'firenze', cx: 490, cy: 478, label: 'FIRENZE', meta: '43.77°N · 12',     size: 'md',  color: '#DBA42E' },
+    { id: 'roma',    cx: 504, cy: 510, label: 'ROMA',    meta: '41.90°N · 08',     size: 'md',  color: '#DBA42E' },
+    { id: 'napoli',  cx: 514, cy: 538, label: 'NAPOLI',  meta: '40.85°N · 04',     size: 'sm',  color: '#DBA42E' },
+    { id: 'tokyo',   cx: 902, cy: 458, label: 'TOKYO',   meta: '35.68°N',          size: 'sm',  color: '#FAF6EC' },
+    { id: 'shanghai',cx: 838, cy: 490, label: 'SHANGHAI',meta: '31.23°N',          size: 'sm',  color: '#FAF6EC' },
+    { id: 'bangkok', cx: 810, cy: 558, label: 'BANGKOK', meta: '13.75°N',          size: 'sm',  color: '#FAF6EC' },
+    { id: 'jakarta', cx: 822, cy: 620, label: 'JAKARTA', meta: '06.20°S',          size: 'sm',  color: '#FAF6EC' },
+  ];
+
+  // Arcs from Seoul → cities (Milano primary, others as network)
+  const seoul = { x: 880, y: 420 };
+  const arcs = cities
+    .filter(c => c.id !== 'seoul')
+    .map(c => {
+      // control point above the midpoint for nice curve
+      const mx = (seoul.x + c.cx) / 2;
+      const my = (seoul.y + c.cy) / 2 - Math.abs(seoul.x - c.cx) * 0.35;
+      return { id: c.id, d: `M ${seoul.x} ${seoul.y} Q ${mx} ${my} ${c.cx} ${c.cy}`, primary: ['milano','firenze','roma'].includes(c.id) };
+    });
+
+  return (
+    <div className="operate__globe-wrap" aria-hidden="true">
+      <svg className="operate__globe" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+        <defs>
+          <radialGradient id="op-globe-fill" cx="55%" cy="42%" r="62%">
+            <stop offset="0%"  stopColor="#FAF6EC" stopOpacity="0.05"/>
+            <stop offset="55%" stopColor="#FAF6EC" stopOpacity="0.02"/>
+            <stop offset="100%" stopColor="#000" stopOpacity="0"/>
+          </radialGradient>
+          <radialGradient id="op-globe-edge" cx="50%" cy="50%" r="50%">
+            <stop offset="80%" stopColor="#FAF6EC" stopOpacity="0"/>
+            <stop offset="100%" stopColor="#FAF6EC" stopOpacity="0.18"/>
+          </radialGradient>
+          {arcs.map(a => <path key={'p-'+a.id} id={'op-arc-'+a.id} d={a.d}/>)}
+        </defs>
+
+        <g transform="translate(640 520)">
+          {/* sphere fills */}
+          <circle r="460" fill="url(#op-globe-fill)"/>
+          <circle r="460" fill="url(#op-globe-edge)"/>
+          <circle r="460" fill="none" stroke="#FAF6EC" strokeOpacity="0.55" strokeWidth="1.2"/>
+
+          {/* latitudes — static */}
+          <g stroke="#FAF6EC" fill="none">
+            <ellipse rx="460" ry="80"  strokeOpacity="0.18"/>
+            <ellipse rx="460" ry="160" strokeOpacity="0.18"/>
+            <ellipse rx="460" ry="240" strokeOpacity="0.18"/>
+            <ellipse rx="460" ry="320" strokeOpacity="0.16"/>
+            <ellipse rx="460" ry="400" strokeOpacity="0.14"/>
+            <line x1="-460" y1="0" x2="460" y2="0" strokeOpacity="0.32"/>
+          </g>
+
+          {/* longitudes — rotating */}
+          <g stroke="#FAF6EC" fill="none" className="op-globe__long">
+            <ellipse rx="80"  ry="460" strokeOpacity="0.18"/>
+            <ellipse rx="160" ry="460" strokeOpacity="0.18"/>
+            <ellipse rx="240" ry="460" strokeOpacity="0.20"/>
+            <ellipse rx="320" ry="460" strokeOpacity="0.22"/>
+            <ellipse rx="400" ry="460" strokeOpacity="0.22"/>
+            <line x1="0" y1="-460" x2="0" y2="460" strokeOpacity="0.32"/>
+            <animateTransform attributeName="transform" type="rotate"
+              from="0" to="360" dur="60s" repeatCount="indefinite"/>
+          </g>
+
+          {/* meta ticks around equator */}
+          <g fill="#FAF6EC" fillOpacity="0.45" fontFamily="JetBrains Mono, monospace" fontSize="10" letterSpacing="0.18em">
+            {Array.from({ length: 12 }).map((_, i) => {
+              const a = (i / 12) * Math.PI * 2;
+              const x = Math.cos(a) * 478;
+              const y = Math.sin(a) * 478;
+              return <circle key={i} cx={x} cy={y} r="1.5"/>;
+            })}
+          </g>
+        </g>
+
+        {/* arcs — under cities */}
+        <g fill="none">
+          {arcs.map(a => (
+            <use key={'arc-bg-'+a.id} href={'#op-arc-'+a.id}
+              stroke="#FAF6EC"
+              strokeOpacity={a.primary ? 0.28 : 0.14}
+              strokeWidth={a.primary ? 1.2 : 0.8}
+              strokeDasharray={a.primary ? '0' : '3 6'}/>
+          ))}
+          {arcs.filter(a => a.primary).map(a => (
+            <use key={'arc-acc-'+a.id} href={'#op-arc-'+a.id}
+              stroke="#DBA42E" strokeWidth="1.4" strokeOpacity="0.9"/>
+          ))}
+        </g>
+
+        {/* traveling pulses on primary arcs */}
+        {arcs.filter(a => a.primary).map((a, i) => (
+          <g key={'pulse-'+a.id}>
+            <circle r="4" fill="#E6433D">
+              <animateMotion dur={(4.5 + i * 0.8) + 's'} repeatCount="indefinite" rotate="auto" begin={(i * 0.7) + 's'}>
+                <mpath href={'#op-arc-'+a.id}/>
+              </animateMotion>
+            </circle>
+            <circle r="10" fill="#E6433D" fillOpacity="0.22">
+              <animateMotion dur={(4.5 + i * 0.8) + 's'} repeatCount="indefinite" rotate="auto" begin={(i * 0.7) + 's'}>
+                <mpath href={'#op-arc-'+a.id}/>
+              </animateMotion>
+            </circle>
+          </g>
+        ))}
+
+        {/* cities */}
+        <g>
+          {cities.map(c => {
+            const r = c.size === 'lg' ? 7 : c.size === 'md' ? 5 : 4;
+            const halo = r * 2.4;
+            const anchor = c.cx > 600 ? 'start' : 'end';
+            const dx = anchor === 'start' ? 14 : -14;
+            return (
+              <g key={c.id}>
+                <circle cx={c.cx} cy={c.cy} r={halo} fill={c.color} fillOpacity="0.14"
+                  className={'op-globe__halo op-globe__halo--' + c.size}/>
+                <circle cx={c.cx} cy={c.cy} r={r} fill={c.color}/>
+                {c.size !== 'sm' && (
+                  <text x={c.cx + dx} y={c.cy + 4} textAnchor={anchor}
+                    fill="#FAF6EC" fillOpacity="0.32" fontFamily="JetBrains Mono, monospace"
+                    fontSize="10" letterSpacing="0.18em">
+                    {c.meta}
+                  </text>
+                )}
+              </g>
+            );
+          })}
+        </g>
+
+        {/* compass cardinals */}
+        <g fill="#FAF6EC" fillOpacity="0.35" fontFamily="JetBrains Mono, monospace" fontSize="10" letterSpacing="0.28em">
+          <text x="640" y="48"  textAnchor="middle">N · 90°</text>
+          <text x="640" y="992" textAnchor="middle">S · 90°</text>
+          <text x="168" y="524" textAnchor="end">W</text>
+        </g>
+      </svg>
+    </div>
   );
 }
 
