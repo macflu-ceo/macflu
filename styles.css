@@ -20,9 +20,15 @@
 .app-nav__brand {
   font-family: var(--display); font-weight: 900; font-size: 22px;
   letter-spacing: -0.04em; color: inherit; cursor: pointer;
-  display: inline-flex; align-items: baseline; gap: 8px;
+  display: inline-flex; align-items: center; gap: 8px;
 }
 .app-nav__brand sup { font-family: var(--mono); font-size: 10px; font-weight: 500; opacity: 0.55; letter-spacing: 0.04em; }
+.app-nav__brand-img {
+  height: 32px; width: auto; display: block;
+  filter: invert(1); /* white asset → black on cream nav (default) */
+}
+.app-nav--ink .app-nav__brand-img,
+.app-nav--persian .app-nav__brand-img { filter: none; }
 
 .app-tabs {
   display: flex; gap: 4px; align-items: center;
@@ -61,6 +67,7 @@
   .app-tabs__num { display: none; }
   .app-nav__right .nav-cta { display: none; }
   .app-nav__brand sup { display: none; }
+  .app-nav__brand-img { height: 26px; }
 }
 
 /* ============ PAGE CONTAINER ============ */
