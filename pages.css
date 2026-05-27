@@ -11,6 +11,11 @@
   position: relative; overflow: hidden;
 }
 .brink-hero__meta { display: flex; justify-content: space-between; font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; opacity: 0.7; }
+@media (max-width: 540px) {
+  .brink-hero__meta { font-size: 9.5px; letter-spacing: 0.12em; }
+  .brink-hero__meta > div:nth-child(2) { display: none; }
+  .brink-hero__low { font-size: 9.5px; letter-spacing: 0.12em; gap: 12px; }
+}
 .brink-hero__center { display: flex; flex-direction: column; justify-content: center; gap: 24px; padding: 32px 0; }
 .brink-hero__brand {
   font-family: var(--display); font-weight: 900;

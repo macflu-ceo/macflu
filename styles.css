@@ -82,6 +82,10 @@
   text-transform: uppercase; letter-spacing: 0.16em; color: var(--ink-80);
 }
 .hero__meta-right { text-align: right; line-height: 1.4; }
+@media (max-width: 540px) {
+  .hero__meta { font-size: 9.5px; letter-spacing: 0.12em; }
+  .hero__meta-right { display: none; }
+}
 .hero__center { display: flex; flex-direction: column; justify-content: center; padding: 32px 0; position: relative; }
 .hero__big {
   font-family: var(--display); font-weight: 900;
@@ -432,7 +436,8 @@
 .operate > *:not(.operate__globe-wrap):not(.operate__globe-meta) { position: relative; z-index: 1; }
 
 @media (max-width: 900px) {
-  .operate__globe { top: -4%; right: -40%; width: 140%; height: 80%; }
+  .operate__globe { top: -4%; right: -40%; width: 140%; height: 80%; opacity: 0.2; }
+  .operate__globe-wrap { opacity: 0.2; }
   .operate__globe-meta { left: 24px; bottom: 24px; }
 }
 
@@ -465,6 +470,60 @@
 .model__body strong { font-weight: 600; opacity: 1; }
 .model__tail { margin-top: auto; padding-top: 16px; border-top: 1px solid currentColor; font-family: var(--mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; opacity: 0.7; }
 @media (max-width: 900px) { .models__grid { grid-template-columns: 1fr; } }
+
+/* Models 모바일 가로 캐러셀 */
+.models__carousel { position: relative; margin-top: 64px; }
+.models__arrow, .models__dots { display: none; }
+@media (max-width: 900px) {
+  .models__carousel { margin-top: 48px; }
+  .models__grid {
+    display: flex !important;
+    grid-template-columns: none !important;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 -20px;
+    padding: 0 20px;
+    gap: 16px;
+    scroll-padding: 20px;
+  }
+  .models__grid::-webkit-scrollbar { display: none; }
+  .model {
+    flex: 0 0 calc(100% - 40px);
+    min-height: 380px;
+    scroll-snap-align: center;
+  }
+  .models__arrow {
+    display: flex; align-items: center; justify-content: center;
+    position: absolute; top: 40%; transform: translateY(-50%);
+    width: 44px; height: 44px;
+    background: rgba(26,26,26,0.85);
+    color: var(--cream);
+    border: 0; border-radius: 999px;
+    font-size: 26px; line-height: 1;
+    cursor: pointer; z-index: 5;
+    transition: opacity 200ms ease, transform 100ms ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .models__arrow:active { transform: translateY(-50%) scale(0.94); }
+  .models__arrow:disabled { opacity: 0.25; cursor: default; }
+  .models__arrow--prev { left: 4px; }
+  .models__arrow--next { right: 4px; }
+  .models__dots {
+    display: flex; justify-content: center; gap: 8px;
+    margin-top: 20px;
+  }
+  .models__dot {
+    width: 8px; height: 8px; border-radius: 999px;
+    background: var(--ink-12);
+    border: 0; padding: 0; cursor: pointer;
+    transition: background 200ms ease, width 200ms ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .models__dot.is-on { background: var(--ink); width: 24px; }
+}
 
 /* ============ FOR CREATORS (section ⑥) ============ */
 .creators {

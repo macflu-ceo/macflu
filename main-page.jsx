@@ -54,7 +54,7 @@ function MainHero({ tweaks }) {
 
 // ─────── HERO → IDENTITY MARQUEE ────────────────────────────────────────────
 function MainMarquee() {
-  const items = ['패션 MCN', 'Brands, dressed in influence', '50+ 부티크 직계약', '명품 공급 No.1', '글로벌 커머스'];
+  const items = ['글로벌 No.1 패션 MCN이 되겠습니다', '해외 크리에이터 영입', '해외 플랫폼에서 국내 크리에이터의 활동 지원', '국내 브랜드의 해외 진출', '해외 마켓 진출', '해외 명품 브랜드 수입 및 공급 / 협찬'];
   const dup = [...items, ...items, ...items];
   return (
     <div className="marquee marquee--ink">
@@ -550,6 +550,34 @@ function OperateGlobe() {
 
 // ─────── ⑤ MODELS ───────────────────────────────────────────────────────────
 function MainModels() {
+  const [idx, setIdx] = React.useState(0);
+  const scrollerRef = React.useRef(null);
+
+  const goTo = (i) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const target = el.children[i];
+    if (!target) return;
+    el.scrollTo({ left: target.offsetLeft - el.offsetLeft, behavior: 'smooth' });
+    setIdx(i);
+  };
+
+  React.useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    let timer = null;
+    const onScroll = () => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        const w = el.clientWidth;
+        const i = Math.round(el.scrollLeft / w);
+        setIdx(Math.max(0, Math.min(2, i)));
+      }, 80);
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => { el.removeEventListener('scroll', onScroll); if (timer) clearTimeout(timer); };
+  }, []);
+
   return (
     <section className="models" data-screen-label="05 Models" data-nav-theme="cream">
       <div className="section__head">
@@ -560,31 +588,49 @@ function MainModels() {
         세 가지 방식으로<br/>중개합니다.
       </h2>
 
-      <div className="models__grid">
-        <article className="model reveal">
-          <div>
-            <div className="model__num">— 01 · Editorial</div>
-            <h3 className="model__name">Branded<br/>Content<small>브랜디드 콘텐츠</small></h3>
-          </div>
-          <p className="model__quote">광고가 아닌, 브랜드 톤을 살린 에디토리얼.</p>
-          <p className="model__body"><strong>시즌 단위 발행.</strong> 멀티 플랫폼 동시 송출. 크리에이터의 톤과 브랜드의 톤을, 한 호흡으로.</p>
-        </article>
-        <article className="model reveal" style={{ transitionDelay: '120ms' }}>
-          <div>
-            <div className="model__num">— 02 · Realtime</div>
-            <h3 className="model__name">Live<br/>Commerce<small>라이브 커머스</small></h3>
-          </div>
-          <p className="model__quote">콘텐츠에서 구매까지, 한 화면.</p>
-          <p className="model__body">인스타·틱톡·유튜브 라이브 + <strong>macflu.com</strong> 연동. 다국가 결제·배송 자동화.</p>
-        </article>
-        <article className="model reveal" style={{ transitionDelay: '240ms' }}>
-          <div>
-            <div className="model__num">— 03 · Risk-Zero</div>
-            <h3 className="model__name">RS 판매구조<small>Revenue Share · 위탁판매</small></h3>
-          </div>
-          <p className="model__quote">광고비 0원. 매출에 따른 수익 쉐어.</p>
-          <p className="model__body">위탁판매 기반 RS 구조. <strong>브랜드 진입 리스크 0.</strong> 셀러 파트너 풀과 자동 연결.</p>
-        </article>
+      <div className="models__carousel">
+        <button className="models__arrow models__arrow--prev"
+                onClick={() => goTo(Math.max(0, idx - 1))}
+                disabled={idx === 0}
+                aria-label="이전">‹</button>
+        <button className="models__arrow models__arrow--next"
+                onClick={() => goTo(Math.min(2, idx + 1))}
+                disabled={idx === 2}
+                aria-label="다음">›</button>
+
+        <div className="models__grid" ref={scrollerRef}>
+          <article className="model reveal">
+            <div>
+              <div className="model__num">— 01 · Editorial</div>
+              <h3 className="model__name">Branded<br/>Content<small>브랜디드 콘텐츠</small></h3>
+            </div>
+            <p className="model__quote">광고가 아닌, 브랜드 톤을 살린 에디토리얼.</p>
+            <p className="model__body"><strong>시즌 단위 발행.</strong> 멀티 플랫폼 동시 송출. 크리에이터의 톤과 브랜드의 톤을, 한 호흡으로.</p>
+          </article>
+          <article className="model reveal" style={{ transitionDelay: '120ms' }}>
+            <div>
+              <div className="model__num">— 02 · Realtime</div>
+              <h3 className="model__name">Live<br/>Commerce<small>라이브 커머스</small></h3>
+            </div>
+            <p className="model__quote">콘텐츠에서 구매까지, 한 화면.</p>
+            <p className="model__body">인스타·틱톡·유튜브 라이브 + <strong>macflu.com</strong> 연동. 다국가 결제·배송 자동화.</p>
+          </article>
+          <article className="model reveal" style={{ transitionDelay: '240ms' }}>
+            <div>
+              <div className="model__num">— 03 · Risk-Zero</div>
+              <h3 className="model__name">RS 판매구조<small>Revenue Share · 위탁판매</small></h3>
+            </div>
+            <p className="model__quote">광고비 0원. 매출에 따른 수익 쉐어.</p>
+            <p className="model__body">위탁판매 기반 RS 구조. <strong>브랜드 진입 리스크 0.</strong> 셀러 파트너 풀과 자동 연결.</p>
+          </article>
+        </div>
+
+        <div className="models__dots">
+          {[0, 1, 2].map(i => (
+            <button key={i} className={"models__dot " + (i === idx ? "is-on" : "")}
+                    onClick={() => goTo(i)} aria-label={"슬라이드 " + (i + 1)} />
+          ))}
+        </div>
       </div>
     </section>
   );
