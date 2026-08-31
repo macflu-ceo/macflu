@@ -647,7 +647,6 @@
 .footer__biz-item--wide { flex-basis: 100%; }
 .footer__biz-k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; white-space: nowrap; }
 .footer__low { display: flex; justify-content: space-between; gap: 24px; padding-top: 24px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; opacity: 0.55; flex-wrap: wrap; }
-.footer__kakao { display: inline-flex; align-items: center; gap: 8px; background: #FEE500; color: #1A1A1A; padding: 10px 16px; border-radius: 999px; font-weight: 700; font-family: var(--sans); font-size: 12px; letter-spacing: 0.04em; text-decoration: none; }
 @media (max-width: 900px) { .footer__cols { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 540px) { .footer__cols { grid-template-columns: 1fr; } }
 

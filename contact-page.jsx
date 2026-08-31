@@ -42,7 +42,7 @@ function ContactPage({ tweaks }) {
         {sent ? (
           <div className="contact__success">
             <h3>잘 받았습니다 — <span className="acc">곧 답신.</span></h3>
-            <p>평균 응답 3일 이내. 그동안 카카오 채널이 가장 빠른 길입니다.</p>
+            <p>평균 3일 이내에 답신드립니다.</p>
             <div className="contact__success-mono">— TICKET #MF{Math.floor(Math.random() * 99999).toString().padStart(5, '0')}</div>
           </div>
         ) : (
@@ -92,14 +92,12 @@ function ContactPage({ tweaks }) {
 
         <div className="contact__channels">
           <div className="channel">
-            <span className="channel__label">— Kakao 채널 · 가장 빠른 길</span>
-            <a className="channel__value" href="#" onClick={(e) => { e.preventDefault(); window.__macToast('Kakao 채널 — 연동 준비 중'); }}>
-              @macflu <span className="tag-fast">FAST</span>
-            </a>
+            <span className="channel__label">— Creator · 크리에이터 지원</span>
+            <a className="channel__value" href="mailto:cast@macflu.com">cast@macflu.com <span className="tag-fast">FAST</span></a>
           </div>
           <div className="channel">
-            <span className="channel__label">— Email</span>
-            <a className="channel__value" href="mailto:hello@macflu.com">hello@macflu.com</a>
+            <span className="channel__label">— Brand · 브랜드 · 광고주</span>
+            <a className="channel__value" href="mailto:brand@macflu.com">brand@macflu.com</a>
           </div>
           <div className="channel">
             <span className="channel__label">— Press / Deck</span>
@@ -127,9 +125,6 @@ function SiteFooter({ goTo }) {
         <div className="footer__col">
           <h4>Macflu</h4>
           <p style={{ opacity: 0.7, maxWidth: '32ch' }}>한국 No.1 명품 공급사가 만든 패션 MCN. 브랜드와 영향력을, 콘텐츠로 잇습니다.</p>
-          <a href="#" className="footer__kakao" onClick={(e) => { e.preventDefault(); window.__macToast('Kakao 채널 — 연동 준비 중'); }}>
-            <span>●</span> 카카오 채널로 문의
-          </a>
         </div>
         <div className="footer__col">
           <h4>Pages</h4>
@@ -139,7 +134,8 @@ function SiteFooter({ goTo }) {
         </div>
         <div className="footer__col">
           <h4>Contact</h4>
-          <a href="mailto:hello@macflu.com">hello@macflu.com</a>
+          <a href="mailto:cast@macflu.com">cast@macflu.com <span style={{ opacity: 0.5, fontSize: 11 }}>크리에이터</span></a>
+          <a href="mailto:brand@macflu.com">brand@macflu.com <span style={{ opacity: 0.5, fontSize: 11 }}>브랜드</span></a>
           <p style={{ opacity: 0.55 }}>평균 응답 3일</p>
         </div>
       </div>

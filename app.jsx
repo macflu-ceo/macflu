@@ -42,11 +42,32 @@ window.__macAnimateCounter = (el, target, suffix='', duration=1400) => {
   requestAnimationFrame(step);
 };
 
+// ── Routing ────────────────────────────────────────────────────────────────
+// 세 페이지에 각각 실제 URL을 준다. 크롤러가 /brink, /contact 를 별도 문서로 색인한다.
+const PAGE_PATHS = { main: '/', brink: '/brink', contact: '/contact' };
+const PATH_PAGES = { '/': 'main', '/brink': 'brink', '/contact': 'contact' };
+const PAGE_META = {
+  main: {
+    title: 'Macflu 맥플루 — 명품 공급 인프라 위에서 만든 패션 MCN',
+    desc: '맥플루는 명품 공급사가 만든 패션 MCN입니다. 부티크 직계약, 정품 검수, 국내 물류를 갖춘 인프라 위에서 브랜디드 콘텐츠·라이브 커머스·RS 위탁판매로 브랜드와 크리에이터를 잇습니다.',
+  },
+  brink: {
+    title: 'Brink — 광고비 0원 커머스 인프라 | Macflu 맥플루',
+    desc: 'Brink는 맥플루가 직접 개발한 커머스 OS입니다. 입점·재고·주문·결제·배송·정산을 자동화해 브랜드는 광고비 없이 매출 기반 수익 쉐어로 시작합니다.',
+  },
+  contact: {
+    title: '문의하기 — 크리에이터·브랜드 | Macflu 맥플루',
+    desc: '크리에이터 지원은 cast@macflu.com, 브랜드·광고주 문의는 brand@macflu.com. 평균 3일 이내 답신드립니다.',
+  },
+};
+const pageFromPath = () =>
+  PATH_PAGES[window.location.pathname.replace(/\/+$/, '') || '/'] || 'main';
+
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  const [page, setPage] = React.useState('main');
+  const [page, setPage] = React.useState(pageFromPath);
   const [lang, setLang] = React.useState('KO');
-  const [navTheme, setNavTheme] = React.useState('cream');
+  const [navTheme, setNavTheme] = React.useState(() => (pageFromPath() === 'brink' ? 'ink' : 'cream'));
 
   // apply type scale to root
   React.useEffect(() => {
@@ -87,7 +108,7 @@ function App() {
   }, [page]);
 
   // page switch handler — also reset scroll
-  const goTo = (next) => {
+  const applyPage = (next) => {
     setPage(next);
     window.scrollTo({ top: 0, behavior: 'auto' });
     setNavTheme(next === 'brink' ? 'ink' : 'cream');
@@ -97,6 +118,37 @@ function App() {
         .forEach(el => el.classList.add('in'));
     }, 30);
   };
+
+  const goTo = (next) => {
+    const path = PAGE_PATHS[next];
+    if (path && window.location.pathname !== path) {
+      window.history.pushState({ page: next }, '', path);
+    }
+    applyPage(next);
+  };
+
+  // 브라우저 뒤로/앞으로
+  React.useEffect(() => {
+    const onPop = () => applyPage(pageFromPath());
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
+
+  // 페이지별 title / description / canonical 갱신
+  React.useEffect(() => {
+    const meta = PAGE_META[page];
+    if (!meta) return;
+    document.title = meta.title;
+    const set = (sel, attr, val) => {
+      const el = document.querySelector(sel);
+      if (el) el.setAttribute(attr, val);
+    };
+    set('meta[name="description"]', 'content', meta.desc);
+    set('meta[property="og:title"]', 'content', meta.title);
+    set('meta[property="og:description"]', 'content', meta.desc);
+    set('meta[property="og:url"]', 'content', 'https://www.macflu.com' + PAGE_PATHS[page]);
+    set('link[rel="canonical"]', 'href', 'https://www.macflu.com' + PAGE_PATHS[page]);
+  }, [page]);
 
   // nav theme switches by scroll position (hero sections only)
   React.useEffect(() => {
