@@ -143,6 +143,22 @@ function SiteFooter({ goTo }) {
           <p style={{ opacity: 0.55 }}>평균 응답 3일</p>
         </div>
       </div>
+      <div className="footer__biz">
+        {[
+          ['상호', '맥플루'],
+          ['대표자', '이긍정'],
+          ['사업자등록번호', '602-16-52931'],
+          ['대표번호', '070-8983-9525'],
+          ['개인정보보호책임자', '이긍정'],
+        ].map(([k, v]) => (
+          <span key={k} className="footer__biz-item">
+            <span className="footer__biz-k">{k}</span>{v}
+          </span>
+        ))}
+        <span className="footer__biz-item footer__biz-item--wide">
+          <span className="footer__biz-k">주소</span>서울특별시 강남구 도곡로84길 6, B1층 23호(대치동)
+        </span>
+      </div>
       <div className="footer__low">
         <span>© 2026 Macflu — 맥플루</span>
         <span>EDITION 01 · SS 26 · SEOUL ↔ MILANO</span>

@@ -642,6 +642,10 @@
 .footer__col h4 { font-family: var(--sans); font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.18em; margin: 0 0 16px; opacity: 0.55; }
 .footer__col a, .footer__col p { display: block; font-family: var(--sans); font-size: 14px; margin: 0 0 8px; color: var(--cream); opacity: 0.88; text-decoration: none; }
 .footer__col a:hover { opacity: 1; border-bottom: 1px solid currentColor; }
+.footer__biz { display: flex; flex-wrap: wrap; gap: 10px 28px; padding-top: 28px; font-family: var(--sans); font-size: 12px; line-height: 1.6; opacity: 0.5; }
+.footer__biz-item { display: inline-flex; align-items: baseline; gap: 8px; color: var(--cream); }
+.footer__biz-item--wide { flex-basis: 100%; }
+.footer__biz-k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; opacity: 0.6; white-space: nowrap; }
 .footer__low { display: flex; justify-content: space-between; gap: 24px; padding-top: 24px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.06em; opacity: 0.55; flex-wrap: wrap; }
 .footer__kakao { display: inline-flex; align-items: center; gap: 8px; background: #FEE500; color: #1A1A1A; padding: 10px 16px; border-radius: 999px; font-weight: 700; font-family: var(--sans); font-size: 12px; letter-spacing: 0.04em; text-decoration: none; }
 @media (max-width: 900px) { .footer__cols { grid-template-columns: 1fr 1fr; } }
