@@ -57,6 +57,12 @@
 .lang-toggle button { padding: 4px 8px; border: 0; background: transparent; color: inherit; cursor: pointer; border-radius: 999px; font: inherit; letter-spacing: 0.06em; }
 .lang-toggle button.is-active { background: currentColor; }
 .lang-toggle button.is-active span { color: var(--cream); mix-blend-mode: difference; }
+/* 언어가 셋이라 좁은 화면에서는 칩을 줄인다 */
+@media (max-width: 560px) {
+  .app-nav__right { gap: 10px; }
+  .lang-toggle { font-size: 9px; padding: 2px; }
+  .lang-toggle button { padding: 4px 6px; letter-spacing: 0.02em; }
+}
 .nav-cta { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; padding: 9px 16px; border: 1px solid currentColor; border-radius: 999px; color: inherit; cursor: pointer; background: transparent; transition: background var(--t-fast) var(--ease-edit), color var(--t-fast) var(--ease-edit); }
 .nav-cta:hover { background: var(--tomato); color: var(--cream); border-color: var(--tomato); }
 .app-nav--ink .nav-cta:hover, .app-nav--persian .nav-cta:hover { background: var(--mustard); color: var(--ink); border-color: var(--mustard); }

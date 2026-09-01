@@ -43,31 +43,51 @@ window.__macAnimateCounter = (el, target, suffix='', duration=1400) => {
 };
 
 // ── Routing ────────────────────────────────────────────────────────────────
-// 세 페이지에 각각 실제 URL을 준다. 크롤러가 /brink, /contact 를 별도 문서로 색인한다.
-const PAGE_PATHS = { main: '/', brink: '/brink', contact: '/contact' };
-const PATH_PAGES = { '/': 'main', '/brink': 'brink', '/contact': 'contact' };
-const PAGE_META = {
-  main: {
-    title: 'Macflu 맥플루 — 명품 공급 인프라 위에서 만든 패션 MCN',
-    desc: '맥플루는 명품 공급사가 만든 패션 MCN입니다. 부티크 직계약, 정품 검수, 국내 물류를 갖춘 인프라 위에서 브랜디드 콘텐츠·라이브 커머스·RS 위탁판매로 브랜드와 크리에이터를 잇습니다.',
-  },
-  brink: {
-    title: 'Brink — 광고비 0원 커머스 인프라 | Macflu 맥플루',
-    desc: 'Brink는 맥플루가 직접 개발한 커머스 OS입니다. 입점·재고·주문·결제·배송·정산을 자동화해 브랜드는 광고비 없이 매출 기반 수익 쉐어로 시작합니다.',
-  },
-  contact: {
-    title: '문의하기 — 크리에이터·브랜드 | Macflu 맥플루',
-    desc: '크리에이터 지원은 cast@macflu.com, 브랜드·광고주 문의는 brand@macflu.com. 평균 3일 이내 답신드립니다.',
-  },
-};
-const pageFromPath = () =>
-  PATH_PAGES[window.location.pathname.replace(/\/+$/, '') || '/'] || 'main';
+// URL은 /{lang}/{page} 꼴. 한국어는 접두어 없이 /, 영어·중국어는 /en, /zh.
+// 언어마다 주소가 따로 있어야 검색엔진이 언어별로 색인한다.
+const SITE = 'https://www.macflu.com';
+const PAGE_SLUG = { main: '', brink: 'brink', contact: 'contact' };
+const SLUG_PAGE = { '': 'main', brink: 'brink', contact: 'contact' };
+const OG_LOCALE = { ko: 'ko_KR', en: 'en_US', zh: 'zh_CN' };
+
+function pathFor(lang, page) {
+  const seg = [];
+  if (lang !== 'ko') seg.push(lang);
+  if (PAGE_SLUG[page]) seg.push(PAGE_SLUG[page]);
+  return '/' + seg.join('/');
+}
+
+function parseLocation() {
+  const parts = window.location.pathname.split('/').filter(Boolean);
+  let lang = 'ko';
+  if (parts.length && parts[0] !== 'ko' && LANGS.indexOf(parts[0]) !== -1) lang = parts.shift();
+  return { lang: lang, page: SLUG_PAGE[parts[0] || ''] || 'main' };
+}
+
+// 언어별 대체 주소. 구글이 같은 문서의 다른 언어판을 알아보게 한다.
+function setAlternates(page) {
+  document.querySelectorAll('link[rel="alternate"][data-i18n]').forEach((el) => el.remove());
+  const rows = LANGS.map((l) => [HTML_LANG[l], pathFor(l, page)]);
+  rows.push(['x-default', pathFor('ko', page)]);
+  rows.forEach(([hl, path]) => {
+    const link = document.createElement('link');
+    link.setAttribute('rel', 'alternate');
+    link.setAttribute('hreflang', hl);
+    link.setAttribute('href', SITE + path);
+    link.setAttribute('data-i18n', '1');
+    document.head.appendChild(link);
+  });
+}
 
 function App() {
+  const init = parseLocation();
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
-  const [page, setPage] = React.useState(pageFromPath);
-  const [lang, setLang] = React.useState('KO');
-  const [navTheme, setNavTheme] = React.useState(() => (pageFromPath() === 'brink' ? 'ink' : 'cream'));
+  const [page, setPage] = React.useState(init.page);
+  const [lang, setLang] = React.useState(init.lang);
+  const [navTheme, setNavTheme] = React.useState(init.page === 'brink' ? 'ink' : 'cream');
+
+  // 자식이 그려지기 전에 사전을 현재 언어로 맞춘다.
+  __setLangData(lang);
 
   // apply type scale to root
   React.useEffect(() => {
@@ -120,24 +140,41 @@ function App() {
   };
 
   const goTo = (next) => {
-    const path = PAGE_PATHS[next];
-    if (path && window.location.pathname !== path) {
-      window.history.pushState({ page: next }, '', path);
+    const path = pathFor(lang, next);
+    if (window.location.pathname !== path) {
+      window.history.pushState({ page: next, lang: lang }, '', path);
     }
     applyPage(next);
   };
 
+  // 같은 페이지에 머무른 채 언어만 교체
+  const switchLang = (next) => {
+    if (next === lang) return;
+    const path = pathFor(next, page);
+    if (window.location.pathname !== path) {
+      window.history.pushState({ page: page, lang: next }, '', path);
+    }
+    setLang(next);
+  };
+
   // 브라우저 뒤로/앞으로
   React.useEffect(() => {
-    const onPop = () => applyPage(pageFromPath());
+    const onPop = () => {
+      const loc = parseLocation();
+      setLang(loc.lang);
+      applyPage(loc.page);
+    };
     window.addEventListener('popstate', onPop);
     return () => window.removeEventListener('popstate', onPop);
   }, []);
 
-  // 페이지별 title / description / canonical 갱신
+  // 언어·페이지별 title / description / canonical / hreflang 갱신
   React.useEffect(() => {
-    const meta = PAGE_META[page];
+    document.documentElement.lang = HTML_LANG[lang] || 'ko';
+    const dict = I18N[lang] || I18N.ko;
+    const meta = dict.meta && dict.meta[page];
     if (!meta) return;
+    const url = SITE + pathFor(lang, page);
     document.title = meta.title;
     const set = (sel, attr, val) => {
       const el = document.querySelector(sel);
@@ -146,9 +183,13 @@ function App() {
     set('meta[name="description"]', 'content', meta.desc);
     set('meta[property="og:title"]', 'content', meta.title);
     set('meta[property="og:description"]', 'content', meta.desc);
-    set('meta[property="og:url"]', 'content', 'https://www.macflu.com' + PAGE_PATHS[page]);
-    set('link[rel="canonical"]', 'href', 'https://www.macflu.com' + PAGE_PATHS[page]);
-  }, [page]);
+    set('meta[property="og:url"]', 'content', url);
+    set('meta[property="og:locale"]', 'content', OG_LOCALE[lang]);
+    set('meta[name="twitter:title"]', 'content', meta.title);
+    set('meta[name="twitter:description"]', 'content', meta.desc);
+    set('link[rel="canonical"]', 'href', url);
+    setAlternates(page);
+  }, [page, lang]);
 
   // nav theme switches by scroll position (hero sections only)
   React.useEffect(() => {
@@ -172,7 +213,7 @@ function App() {
 
   return (
     <React.Fragment>
-      <AppNav page={page} setPage={goTo} lang={lang} setLang={setLang} theme={navTheme} />
+      <AppNav page={page} setPage={goTo} lang={lang} setLang={switchLang} theme={navTheme} />
 
       <div className={'page ' + (page === 'main' ? 'is-active' : '')}>
         <MainPage tweaks={t} goTo={goTo} />
@@ -197,21 +238,29 @@ function AppNav({ page, setPage, lang, setLang, theme }) {
       </a>
       <div className="app-tabs" role="tablist">
         <button className={'app-tabs__btn ' + (page === 'main' ? 'is-active' : '')} onClick={() => setPage('main')}>
-          <span className="app-tabs__num">01</span>Macflu
+          <span className="app-tabs__num">01</span>{T.nav.main}
         </button>
         <button className={'app-tabs__btn ' + (page === 'brink' ? 'is-active' : '')} onClick={() => setPage('brink')}>
-          <span className="app-tabs__num">02</span>Brink
+          <span className="app-tabs__num">02</span>{T.nav.brink}
         </button>
         <button className={'app-tabs__btn ' + (page === 'contact' ? 'is-active' : '')} onClick={() => setPage('contact')}>
-          <span className="app-tabs__num">03</span>Contact
+          <span className="app-tabs__num">03</span>{T.nav.contact}
         </button>
       </div>
       <div className="app-nav__right">
         <div className="lang-toggle">
-          <button className={lang === 'KO' ? 'is-active' : ''} onClick={() => setLang('KO')}><span>KO</span></button>
-          <button className={lang === 'EN' ? 'is-active' : ''} onClick={() => { setLang('EN'); window.__macToast('EN — coming soon · 영문 버전 준비 중입니다'); setTimeout(() => setLang('KO'), 800); }}><span>EN</span></button>
+          {LANGS.map((l) => (
+            <button key={l}
+              className={lang === l ? 'is-active' : ''}
+              lang={HTML_LANG[l]}
+              title={LANG_LABEL[l]}
+              aria-label={LANG_LABEL[l]}
+              onClick={() => setLang(l)}>
+              <span>{LANG_SHORT[l]}</span>
+            </button>
+          ))}
         </div>
-        <button className="nav-cta" onClick={() => setPage('contact')}>Get in touch →</button>
+        <button className="nav-cta" onClick={() => setPage('contact')}>{T.nav.cta}</button>
       </div>
     </nav>
   );

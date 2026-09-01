@@ -1,6 +1,12 @@
 {
   "rewrites": [
     { "source": "/brink", "destination": "/index.html" },
-    { "source": "/contact", "destination": "/index.html" }
+    { "source": "/contact", "destination": "/index.html" },
+    { "source": "/en", "destination": "/index.html" },
+    { "source": "/en/brink", "destination": "/index.html" },
+    { "source": "/en/contact", "destination": "/index.html" },
+    { "source": "/zh", "destination": "/index.html" },
+    { "source": "/zh/brink", "destination": "/index.html" },
+    { "source": "/zh/contact", "destination": "/index.html" }
   ]
 }

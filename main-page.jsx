@@ -30,24 +30,24 @@ function MainHero({ tweaks }) {
   return (
     <section className="hero" data-screen-label="01 Hero" data-nav-theme="cream">
       <div className="hero__float" aria-hidden="true">
-        <span className="hero__float-word" style={{ top: '14%', left: '38%' }}>Influence.</span>
-        <span className="hero__float-word" style={{ top: '62%', right: '6%', animationDelay: '-6s' }}>Curated.</span>
-        <span className="hero__float-word" style={{ bottom: '8%', left: '8%', animationDelay: '-12s' }}>Seoul ↔ Milano</span>
+        <span className="hero__float-word" style={{ top: '14%', left: '38%' }}>{T.hero.floatWords[0]}</span>
+        <span className="hero__float-word" style={{ top: '62%', right: '6%', animationDelay: '-6s' }}>{T.hero.floatWords[1]}</span>
+        <span className="hero__float-word" style={{ bottom: '8%', left: '8%', animationDelay: '-12s' }}>{T.hero.floatWords[2]}</span>
       </div>
       <div className="hero__meta">
-        <div>맥플루 · MACFLU</div>
+        <div>{T.hero.metaLeft}</div>
         <div className="hero__meta-right">EDITION 01 · SS 26<br/>Brands × Creators × Commerce</div>
       </div>
       <div className="hero__center">
         <h1 className="hero__big">{heroLines[accent]}</h1>
         <p className="hero__sub">
-          브랜드에 영향력을 입히는 패션 MCN.<br/>
-          이탈리아 부티크 직계약과 한국 명품 인프라.
+          {T.hero.subLine1}<br/>
+          {T.hero.subLine2}
         </p>
       </div>
       <div className="hero__low">
-        <div className="hero__index">01 / 08 — Identity · 항해의 시작</div>
-        <div className="hero__scroll">SCROLL <span className="hero__scroll-arrow"></span></div>
+        <div className="hero__index">{T.hero.index}</div>
+        <div className="hero__scroll">{T.hero.scroll} <span className="hero__scroll-arrow"></span></div>
       </div>
     </section>
   );
@@ -55,8 +55,7 @@ function MainHero({ tweaks }) {
 
 // ─────── HERO → IDENTITY MARQUEE ────────────────────────────────────────────
 function MainMarquee() {
-  const items = ['글로벌 No.1 패션 MCN이 되겠습니다', '해외 크리에이터 영입', '해외 플랫폼에서 국내 크리에이터의 활동 지원', '국내 브랜드의 해외 진출', '해외 마켓 진출', '해외 명품 브랜드 수입 및 공급 / 협찬'];
-  const dup = [...items, ...items, ...items];
+  const dup = [...T.marquee, ...T.marquee, ...T.marquee];
   return (
     <div className="marquee marquee--ink">
       <div className="marquee__track">
@@ -77,13 +76,13 @@ function MainIdentity() {
     <section className="who" data-screen-label="02 Identity" data-nav-theme="cream">
       <div className="who__grid">
         <h2 className="who__h reveal">
-          패션의 자산을,<br/>
-          <span className="acc-persian">콘텐츠로.</span>
+          {T.identity.h1}<br/>
+          <span className="acc-persian">{T.identity.h2}</span>
         </h2>
         <div className="who__body">
-          <p className="reveal"><strong>명품 브랜드부터, 스트릿까지.</strong></p>
-          <p className="reveal">패션 브랜드와 영향력을 잇고.</p>
-          <p className="reveal">브랜드와 크리에이터를, 광고가 아닌 <strong>콘텐츠로</strong> 잇는다.</p>
+          <p className="reveal"><strong>{T.identity.p1}</strong></p>
+          <p className="reveal">{T.identity.p2}</p>
+          <p className="reveal">{T.identity.p3pre}<strong>{T.identity.p3strong}</strong>{T.identity.p3post}</p>
           <div className="who__meta">ESTABLISHED <span>·</span> KOREA <span>·</span> FASHION MCN</div>
         </div>
       </div>
@@ -93,146 +92,34 @@ function MainIdentity() {
 
 // ─────── ③ THE EDGE ★ ───────────────────────────────────────────────────────
 function MainEdge({ tweaks }) {
-  const metrics = [
-    { num: '50', plus: true, label: '해외 부티크 공식 직계약', hint: 'BOUTIQUES · DIRECT CONTRACT', kind: 'persian' },
-    { num: '50', unit: '억+', label: '국내 명품 재고 보유', hint: '₩ KRW · IN STOCK · BONDED', kind: 'tomato' },
-    { num: 'No.1', label: '국내 명품 공급사 네트워크', hint: 'PARENT GROUP · KR LUXURY SUPPLY', kind: 'mustard' },
-    { num: '공식', label: '수입 인프라 직계약', hint: 'IMPORT · DIRECT · OFFICIAL', kind: 'ink' },
+  // 힌트·색상은 언어와 무관한 고정값, 숫자·단위·라벨은 사전에서.
+  const FIXED = [
+    { hint: 'BOUTIQUES · DIRECT CONTRACT', kind: 'persian' },
+    { hint: '₩ KRW · IN STOCK · BONDED', kind: 'tomato' },
+    { hint: 'PARENT GROUP · KR LUXURY SUPPLY', kind: 'mustard' },
+    { hint: 'IMPORT · DIRECT · OFFICIAL', kind: 'ink' },
   ];
+  const metrics = T.edge.metrics.map((m, i) => ({ ...FIXED[i], ...m }));
 
   return (
     <section className="edge" data-screen-label="03 The Edge ★" data-nav-theme="cream">
       <div className="edge__head">
         <div className="section__head" style={{ marginBottom: 0, paddingBottom: 24, borderBottom: '1px solid currentColor' }}>
           <div>
-            <span className="section__index"><strong>03</strong> The Edge</span>
+            <span className="section__index"><strong>03</strong> {T.edge.index}</span>
           </div>
-          <div className="section__head-meta">핵심 자산. 시작하는 자리가 높습니다.</div>
+          <div className="section__head-meta">{T.edge.headMeta}</div>
         </div>
         <h2 className="edge__supertitle reveal">
-          시작하는 자리가, <span className="acc">높습니다.</span>
+          {T.edge.titlePre}<span className="acc">{T.edge.titleAcc}</span>
         </h2>
-        <p className="edge__sub reveal">
-          명품 공급 인프라 위에서 시작합니다. 해외 부티크 50+ 공식 직계약,
-          50억 규모 국내 재고, 국내 No.1 공급사 네트워크.
-          이 자산을 콘텐츠로 푸는 것이 맥플루의 일입니다.
-        </p>
+        <p className="edge__sub reveal">{T.edge.sub}</p>
       </div>
 
       {tweaks.metricStyle === 'bigNumbers' && <MetricsGrid metrics={metrics} />}
       {tweaks.metricStyle === 'cards' && <MetricsCards metrics={metrics} />}
       {tweaks.metricStyle === 'marquee' && <MetricsMarquee metrics={metrics} />}
     </section>
-  );
-}
-
-// ─────── EDGE / GLOBAL — globe + city list ─────────────────────────────
-function EdgeGlobal() {
-  return (
-    <div className="edge__global">
-      <div className="edge__global-grid">
-        <div className="edge__global-vis">
-          <Globe />
-        </div>
-        <div className="edge__global-text">
-          <span className="kicker">— GLOBAL · 글로벌 인프라</span>
-          <h3 className="edge__global-h reveal">
-            서울에서 시작한 직계약,<br/>이탈리아 전역으로.
-          </h3>
-          <p className="edge__global-p reveal">서울 본부에서 시작해 밀라노·피렌체·로마·나폴리·베네치아·토리노로. 부티크 50+ 공식 직계약.</p>
-
-          <ul className="edge__global-cities">
-            <li className="reveal"><span className="city-num">— 01</span><span className="city-name">SEOUL</span><span className="city-meta">서울 · HQ</span></li>
-            <li className="reveal" style={{ transitionDelay: '60ms' }}><span className="city-num">— 02</span><span className="city-name">MILANO</span><span className="city-meta">밀라노 · 18</span></li>
-            <li className="reveal" style={{ transitionDelay: '120ms' }}><span className="city-num">— 03</span><span className="city-name">FIRENZE</span><span className="city-meta">피렌체 · 12</span></li>
-            <li className="reveal" style={{ transitionDelay: '180ms' }}><span className="city-num">— 04</span><span className="city-name">ROMA</span><span className="city-meta">로마 · 8</span></li>
-            <li className="reveal" style={{ transitionDelay: '240ms' }}><span className="city-num">— 05</span><span className="city-name">+ 12 cities</span><span className="city-meta">in network</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function Globe() {
-  return (
-    <svg viewBox="0 0 600 600" className="globe" aria-hidden="true">
-      <defs>
-        <path id="globe-arc-sm" d="M 460 260 Q 300 110 130 280"/>
-        <radialGradient id="globe-glow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#1A1A1A" stopOpacity="0.04"/>
-          <stop offset="100%" stopColor="#1A1A1A" stopOpacity="0"/>
-        </radialGradient>
-      </defs>
-
-      <circle cx="300" cy="300" r="240" fill="url(#globe-glow)"/>
-      <circle cx="300" cy="300" r="240" fill="none" stroke="currentColor" strokeOpacity="0.28" strokeWidth="1"/>
-
-      {/* latitudes — static */}
-      <ellipse cx="300" cy="300" rx="240" ry="60"  fill="none" stroke="currentColor" strokeOpacity="0.12"/>
-      <ellipse cx="300" cy="300" rx="240" ry="120" fill="none" stroke="currentColor" strokeOpacity="0.12"/>
-      <ellipse cx="300" cy="300" rx="240" ry="180" fill="none" stroke="currentColor" strokeOpacity="0.12"/>
-      <line x1="60" y1="300" x2="540" y2="300" stroke="currentColor" strokeOpacity="0.18"/>
-
-      {/* longitudes — rotating */}
-      <g>
-        <ellipse cx="300" cy="300" rx="60"  ry="240" fill="none" stroke="currentColor" strokeOpacity="0.12"/>
-        <ellipse cx="300" cy="300" rx="120" ry="240" fill="none" stroke="currentColor" strokeOpacity="0.12"/>
-        <ellipse cx="300" cy="300" rx="180" ry="240" fill="none" stroke="currentColor" strokeOpacity="0.16"/>
-        <line x1="300" y1="60" x2="300" y2="540" stroke="currentColor" strokeOpacity="0.18"/>
-        <animateTransform attributeName="transform" type="rotate"
-          from="0 300 300" to="360 300 300" dur="48s" repeatCount="indefinite"/>
-      </g>
-
-      {/* background arc reference */}
-      <use href="#globe-arc-sm" stroke="currentColor" strokeOpacity="0.18" strokeWidth="1" fill="none"/>
-      {/* dashed accent arc */}
-      <use href="#globe-arc-sm" stroke="#E6433D" strokeWidth="1.5" fill="none" className="globe__arc"/>
-
-      {/* cities */}
-      <g className="globe__cities">
-        {/* Seoul */}
-        <circle cx="460" cy="260" r="12" fill="#E6433D" fillOpacity="0.18" className="globe__halo globe__halo--seoul"/>
-        <circle cx="460" cy="260" r="6" fill="#E6433D"/>
-        <text x="478" y="262" fill="currentColor" fontSize="11" fontFamily="JetBrains Mono, monospace" letterSpacing="0.18em">SEOUL</text>
-        <text x="478" y="278" fill="currentColor" fontSize="9" fontFamily="JetBrains Mono, monospace" letterSpacing="0.14em" opacity="0.45">37.56 N · HQ</text>
-
-        {/* Milano */}
-        <circle cx="130" cy="280" r="10" fill="#DBA42E" fillOpacity="0.22" className="globe__halo globe__halo--milano"/>
-        <circle cx="130" cy="280" r="6" fill="#DBA42E"/>
-        <text x="120" y="266" fill="currentColor" fontSize="11" fontFamily="JetBrains Mono, monospace" letterSpacing="0.18em" textAnchor="end">MILANO</text>
-        <text x="120" y="282" fill="currentColor" fontSize="9" fontFamily="JetBrains Mono, monospace" letterSpacing="0.14em" textAnchor="end" opacity="0.45">45.46 N · 18</text>
-
-        {/* smaller cities */}
-        <g className="globe__cities-small">
-          <circle cx="160" cy="316" r="4" fill="#DBA42E"/>
-          <text x="172" y="320" fill="currentColor" fontSize="9" fontFamily="JetBrains Mono, monospace" letterSpacing="0.14em" opacity="0.55">FIRENZE</text>
-          <circle cx="195" cy="350" r="3" fill="#DBA42E"/>
-          <text x="207" y="354" fill="currentColor" fontSize="9" fontFamily="JetBrains Mono, monospace" letterSpacing="0.14em" opacity="0.55">ROMA</text>
-          <circle cx="180" cy="380" r="3" fill="#DBA42E"/>
-          <circle cx="220" cy="370" r="2.5" fill="#DBA42E"/>
-          <circle cx="100" cy="320" r="2.5" fill="#DBA42E"/>
-        </g>
-      </g>
-
-      {/* traveling pulse along arc */}
-      <circle r="5" fill="#E6433D">
-        <animateMotion dur="4.2s" repeatCount="indefinite" rotate="auto">
-          <mpath href="#globe-arc-sm"/>
-        </animateMotion>
-      </circle>
-      <circle r="10" fill="#E6433D" fillOpacity="0.2">
-        <animateMotion dur="4.2s" repeatCount="indefinite" rotate="auto">
-          <mpath href="#globe-arc-sm"/>
-        </animateMotion>
-      </circle>
-
-      {/* compass meta */}
-      <text x="300" y="42" fill="currentColor" fontSize="9" fontFamily="JetBrains Mono, monospace" letterSpacing="0.22em" textAnchor="middle" opacity="0.45">N · 90°</text>
-      <text x="300" y="572" fill="currentColor" fontSize="9" fontFamily="JetBrains Mono, monospace" letterSpacing="0.22em" textAnchor="middle" opacity="0.45">S · 90°</text>
-      <text x="38" y="304" fill="currentColor" fontSize="9" fontFamily="JetBrains Mono, monospace" letterSpacing="0.22em" textAnchor="end" opacity="0.45">W</text>
-      <text x="562" y="304" fill="currentColor" fontSize="9" fontFamily="JetBrains Mono, monospace" letterSpacing="0.22em" opacity="0.45">E</text>
-    </svg>
   );
 }
 
@@ -313,40 +200,17 @@ function CountUp({ value, unit, plus }) {
   );
 }
 
-function BoutiqueStrip() {
-  // 16 placeholder boutique cells (per brief: abstract grid, not real logos)
-  const cells = [
-    { num: '01', name: 'Boutique', loc: 'Milano' },
-    { num: '02', name: 'Atelier',  loc: 'Firenze' },
-    { num: '03', name: 'Maison',   loc: 'Roma' },
-    { num: '04', name: 'Studio',   loc: 'Milano' },
-    { num: '05', name: 'Galleria', loc: 'Venezia' },
-    { num: '06', name: 'Riserva',  loc: 'Torino' },
-    { num: '07', name: 'Casa',     loc: 'Napoli' },
-    { num: '08', name: 'Salone',   loc: 'Bologna' },
-    { num: '09', name: 'Vetrina',  loc: 'Milano' },
-    { num: '10', name: 'Officina', loc: 'Firenze' },
-    { num: '11', name: 'Boutique', loc: 'Roma' },
-    { num: '12', name: 'Atelier',  loc: 'Como' },
-    { num: '13', name: 'Maison',   loc: 'Verona' },
-    { num: '14', name: 'Casa',     loc: 'Genova' },
-    { num: '15', name: 'Studio',   loc: 'Milano' },
-    { num: '16', name: '+ 35',     loc: 'in network' },
-  ];
-  return (
-    <div className="boutique-strip">
-      {cells.map((c, i) => (
-        <div key={i} className="boutique-cell">
-          <div className="boutique-cell__num">— {c.num}</div>
-          <div className="boutique-cell__name">{c.name}</div>
-          <div className="boutique-cell__loc">{c.loc}</div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
 // ─────── ④ OPERATE ──────────────────────────────────────────────────────────
+// 칩은 고유명사라 언어와 무관하게 고정.
+const FLOW_CHIPS = [
+  [{ label: 'BOUTIQUE' }, { label: 'DIRECT' }, { label: 'SEASONAL' }],
+  [{ label: 'JP' }, { label: 'CN' }, { label: 'SEA' }, { label: 'US' }],
+  [{ label: 'TikTok' }, { label: 'Instagram' }, { label: 'YouTube' },
+   { label: 'Bilibili', future: true }, { label: 'RED 小红书', future: true }],
+  [{ label: 'Shopee' }, { label: 'Lazada' }, { label: 'TikTok Shop' },
+   { label: 'Amazon' }, { label: 'Rakuten' }, { label: 'macflu.com' }],
+];
+
 function MainOperate() {
   return (
     <section className="operate" data-screen-label="04 Operate" data-nav-theme="ink">
@@ -356,45 +220,27 @@ function MainOperate() {
         <div>14 CITIES · 6 PLATFORMS · 4 TIMEZONES</div>
       </div>
       <div className="section__head" style={{ borderBottomColor: 'rgba(250,246,236,0.32)', color: 'inherit', opacity: 1 }}>
-        <div><span style={{ opacity: 0.6 }}><strong style={{ fontSize: 13 }}>04</strong> Operate</span></div>
-        <div className="section__head-meta" style={{ opacity: 0.6 }}>한국에서 시작. 한국에서 끝나지 않는다.</div>
+        <div><span style={{ opacity: 0.6 }}><strong style={{ fontSize: 13 }}>04</strong> {T.operate.index}</span></div>
+        <div className="section__head-meta" style={{ opacity: 0.6 }}>{T.operate.headMeta}</div>
       </div>
       <h2 className="operate__h reveal">
-        글로벌 시장에서 결과를<br/>
-        <span className="acc">만드는 것을 목표로 합니다.</span>
+        {T.operate.hLine1}<br/>
+        <span className="acc">{T.operate.hLine2}</span>
       </h2>
 
       <div className="operate__flow">
-        <div className="flow reveal">
-          <div className="flow__num">— 01</div>
-          <h3 className="flow__title">해외 브랜드<br/>컨택</h3>
-          <p className="flow__body">이탈리아 부티크 직계약 네트워크. 시즌마다 새 라인업.</p>
-          <div className="flow__chips"><span className="chip">Milano</span><span className="chip">Firenze</span><span className="chip">Roma</span></div>
-        </div>
-        <div className="flow reveal" style={{ transitionDelay: '120ms' }}>
-          <div className="flow__num">— 02</div>
-          <h3 className="flow__title">해외 크리에이터<br/>영입</h3>
-          <p className="flow__body">한국 콘텐츠와 통하는 해외 크리에이터. 톤과 시장을 함께 연결.</p>
-          <div className="flow__chips"><span className="chip">JP</span><span className="chip">CN</span><span className="chip">SEA</span><span className="chip">US</span></div>
-        </div>
-        <div className="flow reveal" style={{ transitionDelay: '240ms' }}>
-          <div className="flow__num">— 03</div>
-          <h3 className="flow__title">다채널<br/>콘텐츠</h3>
-          <p className="flow__body">하나의 캠페인을, 여러 플랫폼의 호흡으로.</p>
-          <div className="flow__chips">
-            <span className="chip">TikTok</span><span className="chip">Instagram</span><span className="chip">YouTube</span>
-            <span className="chip future">Bilibili</span><span className="chip future">RED 샤오홍슈</span>
+        {T.operate.flows.map((f, i) => (
+          <div key={i} className="flow reveal" style={{ transitionDelay: (i * 120) + 'ms' }}>
+            <div className="flow__num">— 0{i + 1}</div>
+            <h3 className="flow__title">{f.t1}<br/>{f.t2}</h3>
+            <p className="flow__body">{f.body}</p>
+            <div className="flow__chips">
+              {FLOW_CHIPS[i].map((c, j) => (
+                <span key={j} className={'chip' + (c.future ? ' future' : '')}>{c.label}</span>
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="flow reveal" style={{ transitionDelay: '360ms' }}>
-          <div className="flow__num">— 04</div>
-          <h3 className="flow__title">글로벌<br/>커머스</h3>
-          <p className="flow__body">콘텐츠가 본 즉시, 살 수 있는 거리. 다국가 결제·배송 자동화.</p>
-          <div className="flow__chips">
-            <span className="chip">Shopee</span><span className="chip">Lazada</span><span className="chip">TikTok Shop</span>
-            <span className="chip">Amazon</span><span className="chip">Rakuten</span><span className="chip">macflu.com</span>
-          </div>
-        </div>
+        ))}
       </div>
     </section>
   );
@@ -549,6 +395,8 @@ function OperateGlobe() {
 }
 
 // ─────── ⑤ MODELS ───────────────────────────────────────────────────────────
+const MODEL_KINDS = ['Editorial', 'Realtime', 'Risk-Zero'];
+
 function MainModels() {
   const [idx, setIdx] = React.useState(0);
   const scrollerRef = React.useRef(null);
@@ -581,54 +429,43 @@ function MainModels() {
   return (
     <section className="models" data-screen-label="05 Models" data-nav-theme="cream">
       <div className="section__head">
-        <div><span className="section__index"><strong>05</strong> Commercial Models</span></div>
-        <div className="section__head-meta">우리가 중개하는 방식</div>
+        <div><span className="section__index"><strong>05</strong> {T.models.index}</span></div>
+        <div className="section__head-meta">{T.models.headMeta}</div>
       </div>
       <h2 className="section__h2 reveal" style={{ maxWidth: '20ch' }}>
-        세 가지 방식으로<br/>중개합니다.
+        {T.models.hLine1}<br/>{T.models.hLine2}
       </h2>
 
       <div className="models__carousel">
         <button className="models__arrow models__arrow--prev"
                 onClick={() => goTo(Math.max(0, idx - 1))}
                 disabled={idx === 0}
-                aria-label="이전">‹</button>
+                aria-label={T.models.prev}>‹</button>
         <button className="models__arrow models__arrow--next"
                 onClick={() => goTo(Math.min(2, idx + 1))}
                 disabled={idx === 2}
-                aria-label="다음">›</button>
+                aria-label={T.models.next}>›</button>
 
         <div className="models__grid" ref={scrollerRef}>
-          <article className="model reveal">
-            <div>
-              <div className="model__num">— 01 · Editorial</div>
-              <h3 className="model__name">Branded<br/>Content<small>브랜디드 콘텐츠</small></h3>
-            </div>
-            <p className="model__quote">광고가 아닌, 브랜드 톤을 살린 에디토리얼.</p>
-            <p className="model__body"><strong>시즌 단위 발행.</strong> 멀티 플랫폼 동시 송출. 크리에이터의 톤과 브랜드의 톤을, 한 호흡으로.</p>
-          </article>
-          <article className="model reveal" style={{ transitionDelay: '120ms' }}>
-            <div>
-              <div className="model__num">— 02 · Realtime</div>
-              <h3 className="model__name">Live<br/>Commerce<small>라이브 커머스</small></h3>
-            </div>
-            <p className="model__quote">콘텐츠에서 구매까지, 한 화면.</p>
-            <p className="model__body">인스타·틱톡·유튜브 라이브 + <strong>macflu.com</strong> 연동. 다국가 결제·배송 자동화.</p>
-          </article>
-          <article className="model reveal" style={{ transitionDelay: '240ms' }}>
-            <div>
-              <div className="model__num">— 03 · Risk-Zero</div>
-              <h3 className="model__name">RS 판매구조<small>Revenue Share · 위탁판매</small></h3>
-            </div>
-            <p className="model__quote">광고비 0원. 매출에 따른 수익 쉐어.</p>
-            <p className="model__body">위탁판매 기반 RS 구조. <strong>브랜드 진입 리스크 0.</strong> 셀러 파트너 풀과 자동 연결.</p>
-          </article>
+          {T.models.cards.map((c, i) => (
+            <article key={i} className="model reveal" style={{ transitionDelay: (i * 120) + 'ms' }}>
+              <div>
+                <div className="model__num">— 0{i + 1} · {MODEL_KINDS[i]}</div>
+                <h3 className="model__name">
+                  {c.name1}{c.name2 ? <React.Fragment><br/>{c.name2}</React.Fragment> : null}
+                  <small>{c.small}</small>
+                </h3>
+              </div>
+              <p className="model__quote">{c.quote}</p>
+              <p className="model__body">{c.bodyPre}<strong>{c.bodyStrong}</strong>{c.bodyRest}</p>
+            </article>
+          ))}
         </div>
 
         <div className="models__dots">
           {[0, 1, 2].map(i => (
             <button key={i} className={"models__dot " + (i === idx ? "is-on" : "")}
-                    onClick={() => goTo(i)} aria-label={"슬라이드 " + (i + 1)} />
+                    onClick={() => goTo(i)} aria-label={T.models.slide + (i + 1)} />
           ))}
         </div>
       </div>
@@ -641,38 +478,25 @@ function MainCreators({ goTo }) {
   return (
     <section className="creators" data-screen-label="06 Creators" data-nav-theme="persian">
       <div className="section__head" style={{ borderBottomColor: 'rgba(250,246,236,0.32)' }}>
-        <div><span style={{ opacity: 0.7 }}><strong style={{ fontSize: 13 }}>06</strong> For Creators</span></div>
-        <div className="section__head-meta" style={{ opacity: 0.7 }}>크리에이터의 성장이 먼저</div>
+        <div><span style={{ opacity: 0.7 }}><strong style={{ fontSize: 13 }}>06</strong> {T.creators.index}</span></div>
+        <div className="section__head-meta" style={{ opacity: 0.7 }}>{T.creators.headMeta}</div>
       </div>
       <h2 className="creators__h reveal">
-        크리에이터의 <span className="acc">성장이</span><br/>먼저.
+        {T.creators.hPre}<span className="acc">{T.creators.hAcc}</span><br/>{T.creators.hPost}
       </h2>
-      <p className="creators__sub reveal">기획부터 정산까지. 함께 짓는 동료의 호흡으로 운영합니다.</p>
+      <p className="creators__sub reveal">{T.creators.sub}</p>
 
       <div className="support-grid">
-        <div className="support reveal">
-          <div className="support__icon">01</div>
-          <h3 className="support__title">콘텐츠 가이드·기획</h3>
-          <p className="support__body">기획부터 톤·매너까지. 시즌 단위로 함께 짭니다.</p>
-        </div>
-        <div className="support reveal" style={{ transitionDelay: '100ms' }}>
-          <div className="support__icon">02</div>
-          <h3 className="support__title">매니지먼트</h3>
-          <p className="support__body">분석·일정·계약·정산. 풀패키지 운영.</p>
-        </div>
-        <div className="support reveal" style={{ transitionDelay: '200ms' }}>
-          <div className="support__icon">03</div>
-          <h3 className="support__title">협찬·콜라보</h3>
-          <p className="support__body">명품 부티크 직계약 자산 활용. 진짜 제품으로 진짜 콘텐츠.</p>
-        </div>
-        <div className="support reveal" style={{ transitionDelay: '300ms' }}>
-          <div className="support__icon">04</div>
-          <h3 className="support__title">촬영 지원</h3>
-          <p className="support__body">장소·스타일링·제작 백업. 작품에만 집중하도록.</p>
-        </div>
+        {T.creators.supports.map((s, i) => (
+          <div key={i} className="support reveal" style={{ transitionDelay: (i * 100) + 'ms' }}>
+            <div className="support__icon">0{i + 1}</div>
+            <h3 className="support__title">{s.title}</h3>
+            <p className="support__body">{s.body}</p>
+          </div>
+        ))}
       </div>
 
-      <button className="creators__cta" onClick={() => goTo('contact')}>지원하기</button>
+      <button className="creators__cta" onClick={() => goTo('contact')}>{T.creators.cta}</button>
     </section>
   );
 }
@@ -687,16 +511,16 @@ function MainBrinkEntry({ goTo }) {
           <div className="brink-entry__meta">— 07 · MACFLU PROPRIETARY · COMMERCE OS</div>
           <h2 className="brink-entry__h reveal">
             <span className="brink-name">Brink.</span>
-            맥플루의<br/>자동화 인프라.
+            {T.brinkEntry.hLine1}<br/>{T.brinkEntry.hLine2}
           </h2>
         </div>
         <div>
           <p className="brink-entry__sub reveal">
-            브랜드와 셀러를, 시스템이 잇는다.<br/>
-            외부 SaaS가 아닌 — 맥플루의 자체 시스템.
+            {T.brinkEntry.subLine1}<br/>
+            {T.brinkEntry.subLine2}
           </p>
           <button className="brink-entry__cta" onClick={() => goTo('brink')}>
-            Brink 알아보기 <span className="num">→ 02</span>
+            {T.brinkEntry.cta} <span className="num">→ 02</span>
           </button>
         </div>
       </div>
@@ -712,16 +536,16 @@ function MainOrigin({ goTo }) {
         <div>
           <div style={{ fontFamily: 'var(--mono)', fontSize: 11, letterSpacing: '0.18em', textTransform: 'uppercase', opacity: 0.6, marginBottom: 24 }}>— 08 · A Note</div>
           <p className="origin__quote reveal">
-            한국 No.1 명품 공급사가 만든 패션 MCN.<br/>
-            인프라 위에서 콘텐츠를 짓습니다.<br/>
-            진열장 너머의 옷을, 콘텐츠로 입혀냅니다.
+            {T.origin.quoteLine1}<br/>
+            {T.origin.quoteLine2}<br/>
+            {T.origin.quoteLine3}
           </p>
-          <p className="origin__sign">— Founder · 맥플루</p>
+          <p className="origin__sign">{T.origin.sign}</p>
         </div>
         <div className="origin__cta-wrap">
-          <span className="origin__cta-sub">— FINAL · GET IN TOUCH</span>
+          <span className="origin__cta-sub">{T.origin.ctaSub}</span>
           <button className="origin__cta" onClick={() => goTo('contact')}>
-            Contact.
+            {T.origin.cta}
           </button>
           <span className="origin__cta-sub" style={{ marginTop: 16 }}>CAST@MACFLU.COM · BRAND@MACFLU.COM</span>
         </div>
