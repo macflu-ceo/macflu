@@ -8,5 +8,5 @@
 //            지나가는 봇을 걸러내는 자물쇠 정도로만 보시면 됩니다.
 window.MACFLU_FORM = {
   endpoint: '',
-  token: '',
+  token: 'mf_2026_kR7xQ2vL9pAe',
 };

@@ -21,7 +21,7 @@
 3. 맨 위 세 값을 채웁니다.
 
    - `SHEET_ID` — 1번에서 복사한 값
-   - `TOKEN` — 아무 문자열이나 길게. 예: `mf_2026_kR7xQ2vL9pAe`
+   - `TOKEN` — `form-config.js` 에 들어 있는 값과 **글자 하나까지 똑같이**. 다르면 문의가 거부됩니다
    - `TO_BY_KIND` — 기본값 그대로 두시면 Creator는 cast@, Brand는 brand@ 로 갑니다
 
 4. 저장(⌘S).
@@ -46,10 +46,12 @@
 
 ```js
 window.MACFLU_FORM = {
-  endpoint: 'https://script.google.com/macros/s/…/exec',
-  token: 'mf_2026_kR7xQ2vL9pAe',
+  endpoint: 'https://script.google.com/macros/s/…/exec',   // ← 3번에서 받은 URL
+  token: 'mf_2026_kR7xQ2vL9pAe',                           // ← 이미 채워져 있음
 };
 ```
+
+토큰은 이미 넣어뒀으니 `endpoint` 한 줄만 채우면 됩니다.
 
 ## 5. 확인
 
