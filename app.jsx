@@ -234,7 +234,7 @@ function AppNav({ page, setPage, lang, setLang, theme }) {
   return (
     <nav className={'app-nav ' + (theme === 'ink' ? 'app-nav--ink' : theme === 'persian' ? 'app-nav--persian' : '')}>
       <a className="app-nav__brand" onClick={() => setPage('main')} aria-label="Macflu">
-        <img src="macflu-logo-white.png" alt="Macflu" className="app-nav__brand-img" />
+        <img src="/macflu-logo-white.png" alt="Macflu" className="app-nav__brand-img" />
       </a>
       <div className="app-tabs" role="tablist">
         <button className={'app-tabs__btn ' + (page === 'main' ? 'is-active' : '')} onClick={() => setPage('main')}>
