@@ -7,6 +7,7 @@ function MainPage({ tweaks, goTo }) {
       <MainHero tweaks={tweaks} />
       <MainMarquee />
       <MainIdentity />
+      <MainEdge tweaks={tweaks} />
       <MainOperate />
       <MainModels />
       <MainCreators goTo={goTo} />
@@ -93,7 +94,7 @@ function MainIdentity() {
 // ─────── ③ THE EDGE ★ ───────────────────────────────────────────────────────
 function MainEdge({ tweaks }) {
   const metrics = [
-    { num: '50', plus: true, label: '이탈리아 부티크 공식 직계약', hint: 'BOUTIQUES · MILANO · FIRENZE · ROMA', kind: 'persian' },
+    { num: '50', plus: true, label: '해외 부티크 공식 직계약', hint: 'BOUTIQUES · DIRECT CONTRACT', kind: 'persian' },
     { num: '50', unit: '억+', label: '국내 명품 재고 보유', hint: '₩ KRW · IN STOCK · BONDED', kind: 'tomato' },
     { num: 'No.1', label: '국내 명품 공급사 네트워크', hint: 'PARENT GROUP · KR LUXURY SUPPLY', kind: 'mustard' },
     { num: '공식', label: '수입 인프라 직계약', hint: 'IMPORT · DIRECT · OFFICIAL', kind: 'ink' },
@@ -112,16 +113,15 @@ function MainEdge({ tweaks }) {
           시작하는 자리가, <span className="acc">높습니다.</span>
         </h2>
         <p className="edge__sub reveal">
-          명품 공급 인프라. 50+ 이탈리아 부티크 공식 직계약. 50억 규모 국내 재고.
-          이 자산을 콘텐츠로 푸는 것이 맥플루의 일.
+          명품 공급 인프라 위에서 시작합니다. 해외 부티크 50+ 공식 직계약,
+          50억 규모 국내 재고, 국내 No.1 공급사 네트워크.
+          이 자산을 콘텐츠로 푸는 것이 맥플루의 일입니다.
         </p>
       </div>
 
       {tweaks.metricStyle === 'bigNumbers' && <MetricsGrid metrics={metrics} />}
       {tweaks.metricStyle === 'cards' && <MetricsCards metrics={metrics} />}
       {tweaks.metricStyle === 'marquee' && <MetricsMarquee metrics={metrics} />}
-
-      <EdgeGlobal />
     </section>
   );
 }
@@ -723,7 +723,7 @@ function MainOrigin({ goTo }) {
           <button className="origin__cta" onClick={() => goTo('contact')}>
             Contact.
           </button>
-          <span className="origin__cta-sub" style={{ marginTop: 16 }}>HELLO@MACFLU.COM</span>
+          <span className="origin__cta-sub" style={{ marginTop: 16 }}>CAST@MACFLU.COM · BRAND@MACFLU.COM</span>
         </div>
       </div>
     </section>
