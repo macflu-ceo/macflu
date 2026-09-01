@@ -1,20 +1,63 @@
 // ContactPage — /contact — 짧은 폼
 
+const EMPTY_FORM = { name: '', email: '', sns: '', message: '', company: '' };
+const MAIL_BY_TAB = { creator: 'cast@macflu.com', brand: 'brand@macflu.com', other: 'cast@macflu.com' };
+
 function ContactPage({ tweaks }) {
   const [tab, setTab] = React.useState('creator');
-  const [form, setForm] = React.useState({ name: '', email: '', sns: '', message: '' });
-  const [sent, setSent] = React.useState(false);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setSent(true);
-    setTimeout(() => {
-      setSent(false);
-      setForm({ name: '', email: '', sns: '', message: '' });
-    }, 4000);
-  };
+  const [form, setForm] = React.useState(EMPTY_FORM);
+  const [status, setStatus] = React.useState('idle');   // idle | sending | sent | error
+  const [ticket, setTicket] = React.useState('');
 
   const C = T.contact;
+
+  // 적은 내용을 그대로 담은 메일 작성 링크.
+  // 전송이 실패해도 문의가 그냥 사라지지 않게 하는 마지막 안전망.
+  const mailtoHref = () => {
+    const subject = '[' + tab + '] ' + (form.name || '') + ' — macflu.com';
+    const body = [
+      'Name: ' + form.name,
+      'Email: ' + form.email,
+      form.sns ? 'SNS / Web: ' + form.sns : '',
+      '',
+      form.message,
+    ].filter(Boolean).join('\n');
+    return 'mailto:' + MAIL_BY_TAB[tab] +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const cfg = window.MACFLU_FORM || {};
+    if (!cfg.endpoint) { setStatus('error'); return; }
+    setStatus('sending');
+    try {
+      const res = await fetch(cfg.endpoint, {
+        method: 'POST',
+        // text/plain 이라야 preflight 없이 Apps Script로 바로 간다.
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          token: cfg.token,
+          kind: tab,
+          name: form.name,
+          email: form.email,
+          sns: form.sns,
+          message: form.message,
+          company: form.company,          // 허니팟 — 사람은 비워둔다
+          lang: document.documentElement.lang || 'ko',
+          page: window.location.pathname,
+        }),
+      });
+      const data = await res.json();
+      if (!data || !data.ok) throw new Error((data && data.error) || 'failed');
+      setTicket(data.ticket || '');
+      setStatus('sent');
+      setForm(EMPTY_FORM);
+    } catch (err) {
+      setStatus('error');
+    }
+  };
 
   return (
     <main className="contact" data-screen-label="Contact">
@@ -41,11 +84,27 @@ function ContactPage({ tweaks }) {
           ))}
         </div>
 
-        {sent ? (
+        {status === 'sent' ? (
           <div className="contact__success">
             <h3>{C.successH}<span className="acc">{C.successAcc}</span></h3>
             <p>{C.successP}</p>
-            <div className="contact__success-mono">— TICKET #MF{Math.floor(Math.random() * 99999).toString().padStart(5, '0')}</div>
+            {ticket ? <div className="contact__success-mono">— TICKET #{ticket}</div> : null}
+          </div>
+        ) : status === 'error' ? (
+          <div className="contact__success">
+            <h3>{C.errorH}</h3>
+            <p>{C.errorP}</p>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginTop: 24 }}>
+              <a className="contact__send" href={mailtoHref()}
+                 style={{ textDecoration: 'none', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                {C.errorCta}
+              </a>
+              <button type="button" className="contact__send"
+                      style={{ background: 'transparent', color: 'inherit', border: '1px solid currentColor' }}
+                      onClick={() => setStatus('idle')}>
+                {C.retry}
+              </button>
+            </div>
           </div>
         ) : (
           <form className="contact__form" onSubmit={handleSubmit}>
@@ -79,7 +138,18 @@ function ContactPage({ tweaks }) {
               <span className="field__hint">{C.hint}</span>
             </div>
 
-            <button type="submit" className="contact__send">{C.send}</button>
+            {/* 허니팟 — 화면 밖에 두고 사람은 못 채운다. 채워져 오면 봇으로 본다. */}
+            <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, overflow: 'hidden' }}>
+              <label>Company
+                <input tabIndex={-1} autoComplete="off"
+                  value={form.company}
+                  onChange={(e) => setForm({ ...form, company: e.target.value })} />
+              </label>
+            </div>
+
+            <button type="submit" className="contact__send" disabled={status === 'sending'}>
+              {status === 'sending' ? C.sending : C.send}
+            </button>
           </form>
         )}
       </div>
